@@ -23,29 +23,6 @@ https://dashboard.ngrok.com/get-started/setup
 
 そのトークンを、`.env`に入れてください。
 
-## Usage
+## 友達追加
 
-```
-$ git clone git@github.com:ssk9597/Docker-php-node-nginx-mysql-ngrok.git
-$ cd Docker-php-node-nginx-mysql-ngrok
-$ make install
-```
-
-http://127.0.0.1:10080/
-
-## Connect Sequel Pro
-
-Often uses 3306 ports.
-
-【Change】docker-compose.yml
-
-```
-# MySQL
-  db:
-    build: ./docker/mysql
-    volumes:
-      - db-data:/var/lib/mysql
-    ports:
-      <!-- To any number -->
-      - 3306:3306
-```
+https://qr-official.line.me/sid/L/025asahr.png
