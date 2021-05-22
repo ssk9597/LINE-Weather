@@ -1,0 +1,39 @@
+version: '3.8'
+
+volumes:
+  db-data:
+
+services:
+  # php
+  app:
+    build: ./docker/php
+    volumes:
+      - ./src:/laravel
+
+  # nginx
+  web:
+    build: ./docker/nginx
+    ports:
+      - 10080:80
+    volumes:
+      - ./src:/laravel
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /laravel
+
+  # MySQL
+  db:
+    build: ./docker/mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  # ngrok
+  ngrok:
+    image: wernight/ngrok
+    ports:
+      - 4040:4040
+    environment:
+      NGROK_AUTH: ${NGROK_AUTH}
+      NGROK_PROTOCOL: http
+      NGROK_PORT: web:80
