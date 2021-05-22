@@ -9,8 +9,6 @@ use LINE\LINEBot\Constant\HTTPHeader;
 use LINE\LINEBot\SignatureValidator;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 
-
-
 class LINEController extends Controller
 {
   public function sendMessage(Request $request)
@@ -28,5 +26,8 @@ class LINEController extends Controller
     // メッセージを送る準備
     $httpClient = new CurlHTTPClient($channelAccessToken);
     $bot = new LINEBot($httpClient, ['channelSecret' => $channelSecret]);
+
+    //Webhookの処理
+    $events = $bot->parseEventRequest($request->getContent(), $signature);
   }
 }
