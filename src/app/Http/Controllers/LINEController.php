@@ -8,6 +8,8 @@ use LINE\LINEBot;
 use LINE\LINEBot\Constant\HTTPHeader;
 use LINE\LINEBot\SignatureValidator;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+// logs
+use Illuminate\Support\Facades\Log;
 
 class LINEController extends Controller
 {
@@ -29,5 +31,8 @@ class LINEController extends Controller
 
     //Webhookの処理
     $events = $bot->parseEventRequest($request->getContent(), $signature);
+
+    // log
+    Log::info($events);
   }
 }
