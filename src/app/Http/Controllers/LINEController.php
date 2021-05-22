@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 // LINE
+use LINE\LINEBot;
 use LINE\LINEBot\Constant\HTTPHeader;
 use LINE\LINEBot\SignatureValidator;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+
 
 
 class LINEController extends Controller
@@ -21,5 +24,9 @@ class LINEController extends Controller
     if (!SignatureValidator::validateSignature($request->getContent(), $channelSecret, $signature)) {
       return;
     }
+
+    // メッセージを送る準備
+    $httpClient = new CurlHTTPClient($channelAccessToken);
+    $bot = new LINEBot($httpClient, ['channelSecret' => $channelSecret]);
   }
 }
