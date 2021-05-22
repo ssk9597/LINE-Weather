@@ -8,6 +8,8 @@ use LINE\LINEBot;
 use LINE\LINEBot\Constant\HTTPHeader;
 use LINE\LINEBot\SignatureValidator;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 // logs
 use Illuminate\Support\Facades\Log;
 
@@ -34,5 +36,24 @@ class LINEController extends Controller
 
     // log
     Log::info($events);
+
+    foreach ($events as $event) {
+      // eventがテキストメッセージの時
+      if ($event instanceof TextMessage) {
+        // テキストメッセージのテキストを取得する
+        $message = $event->getText();
+        // イベントのリプライトークンを取得する
+        $replyToken = $event->getReplyToken();
+        // 入力された文字が「明日の天気は？」かどうかで応答メッセージを変更する
+        if ($message === "明日の天気は？") {
+          $textMessage = new TextMessageBuilder("https://line.me/R/nv/location/");
+          $bot->replyMessage($replyToken, $textMessage);
+        } else {
+          $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
+          $bot->replyMessage($replyToken, $textMessage);
+        }
+      }
+      return;
+    }
   }
 }
