@@ -44,13 +44,19 @@ class LINEController extends Controller
     foreach ($events as $event) {
       // イベントのリプライトークンを取得する
       $replyToken = $event->getReplyToken();
-
+      // 今日か明日かを判別（true: 今日、false: 明日）
+      $isToday = true;
       // eventがテキストメッセージの時
       if ($event instanceof TextMessage) {
         // テキストメッセージのテキストを取得する
         $message = $event->getText();
-        // 入力された文字が「明日の天気は？」かどうかで応答メッセージを変更する
-        if ($message === "明日の天気は？") {
+        // 入力された文字が「今日の洋服は？」「明日の洋服は？」かどうかで応答メッセージを変更する
+        if ($message === "今日の洋服は？") {
+          $buttonURL = new UriTemplateActionBuilder("現在地を送る", "https://line.me/R/nv/location/");
+          $buttonMessage = new ButtonTemplateBuilder(null, "今日はどんな洋服にしようかな", null, [$buttonURL]);
+          $bot->replyMessage($replyToken, new TemplateMessageBuilder("現在地を送ってください", $buttonMessage));
+        } else if ($message === "明日の洋服は？") {
+          $isToday = false;
           $buttonURL = new UriTemplateActionBuilder("現在地を送る", "https://line.me/R/nv/location/");
           $buttonMessage = new ButtonTemplateBuilder(null, "明日はどんな洋服にしようかな", null, [$buttonURL]);
           $bot->replyMessage($replyToken, new TemplateMessageBuilder("現在地を送ってください", $buttonMessage));
@@ -78,6 +84,7 @@ class LINEController extends Controller
 
         //log
         Log::info($weathers["daily"][1]);
+        Log::info($isToday);
 
         // 時刻
         $time = $weathers["daily"][1]["dt"];
