@@ -13,6 +13,8 @@ use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 // logs
 use Illuminate\Support\Facades\Log;
+// Guzzle
+use GuzzleHttp\Client;
 
 class LINEController extends Controller
 {
@@ -36,7 +38,7 @@ class LINEController extends Controller
     $events = $bot->parseEventRequest($request->getContent(), $signature);
 
     // log
-    Log::info($events);
+    // Log::info($events);
 
     foreach ($events as $event) {
       // eventがテキストメッセージの時
@@ -56,11 +58,20 @@ class LINEController extends Controller
       }
 
       if ($event instanceof LocationMessage) {
-        // 緯度・軽度を取得
+        // 緯度・経度を取得
         $latitude = $event->getLatitude();
         $longitude = $event->getLongitude();
         // API
         $weatherAPI = env("WEATHER_API");
+        // OpenWeather
+        $url = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&units=metric&lang=ja&appid=" . $weatherAPI;
+
+        //guzzle
+        $client = new Client();
+        $response = $client->request("GET", $url);
+        $weathers = $response->getBody();
+
+        $weathers = json_decode($weathers, true);
       }
       return;
     }
