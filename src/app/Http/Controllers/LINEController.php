@@ -11,6 +11,10 @@ use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+
 // logs
 use Illuminate\Support\Facades\Log;
 // Guzzle
@@ -47,8 +51,9 @@ class LINEController extends Controller
         $message = $event->getText();
         // 入力された文字が「明日の天気は？」かどうかで応答メッセージを変更する
         if ($message === "明日の天気は？") {
-          $textMessage = new TextMessageBuilder("https://line.me/R/nv/location/");
-          $bot->replyMessage($replyToken, $textMessage);
+          $buttonURL = new UriTemplateActionBuilder("現在地を送る", "https://line.me/R/nv/location/");
+          $buttonMessage = new ButtonTemplateBuilder(null, "明日はどんな洋服にしようかな", null, [$buttonURL]);
+          $bot->replyMessage($replyToken, new TemplateMessageBuilder("現在地を送ってください", $buttonMessage));
         } else {
           $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
           $bot->replyMessage($replyToken, $textMessage);
@@ -72,18 +77,18 @@ class LINEController extends Controller
         $weathers = json_decode($weathers, true);
 
         //log
-        Log::info($weathers["daily"][0]);
+        Log::info($weathers["daily"][1]);
 
         // 時刻
-        $time = $weathers["daily"][0]["dt"];
+        $time = $weathers["daily"][1]["dt"];
         $time = date("Y/m/d", $time);
         // 天気予報
-        $weatherInformation = $weathers["daily"][0]["weather"][0]["description"];
+        $weatherInformation = $weathers["daily"][1]["weather"][0]["description"];
         // 体感温度（ファッション）（朝、日中、夕方、夜）
-        $mornTemperature = $weathers["daily"][0]["feels_like"]["morn"] . "℃";
-        $dayTemperature = $weathers["daily"][0]["feels_like"]["day"] . "℃";
-        $eveTemperature = $weathers["daily"][0]["feels_like"]["eve"] . "℃";
-        $nightTemperature = $weathers["daily"][0]["feels_like"]["night"] . "℃";
+        $mornTemperature = $weathers["daily"][1]["feels_like"]["morn"] . "℃";
+        $dayTemperature = $weathers["daily"][1]["feels_like"]["day"] . "℃";
+        $eveTemperature = $weathers["daily"][1]["feels_like"]["eve"] . "℃";
+        $nightTemperature = $weathers["daily"][1]["feels_like"]["night"] . "℃";
 
         // メッセージ定型
         $message = "時刻: " . $time . ", 天気: " . $weatherInformation . ", 体感気温: 朝）" . $mornTemperature . ", 日中）" . $dayTemperature . ", 夕方）" . $eveTemperature . ", 夜）" . $nightTemperature;
