@@ -9,6 +9,7 @@ use LINE\LINEBot\Constant\HTTPHeader;
 use LINE\LINEBot\SignatureValidator;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\Event\MessageEvent\LocationMessage;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 // logs
 use Illuminate\Support\Facades\Log;
@@ -52,6 +53,14 @@ class LINEController extends Controller
           $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
           $bot->replyMessage($replyToken, $textMessage);
         }
+      }
+
+      if ($event instanceof LocationMessage) {
+        // 緯度・軽度を取得
+        $latitude = $event->getLatitude();
+        $longitude = $event->getLongitude();
+        // API
+        $weatherAPI = env("WEATHER_API");
       }
       return;
     }
