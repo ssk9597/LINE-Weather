@@ -104,11 +104,27 @@ class LINEController extends Controller
         // 上記の必要項目を配列にする
         $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature);
 
-        // メッセージ定型
-        $message = "時刻: " . $time . ", 天気: " . $weatherInformation . ", 体感気温: 朝）" . $mornTemperature . ", 日中）" . $dayTemperature . ", 夕方）" . $eveTemperature . ", 夜）" . $nightTemperature;
+        // JSONにする
+        $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
+        Log::info($messages);
 
-        $textMessage = new TextMessageBuilder($message);
-        $bot->replyMessage($replyToken, $textMessage);
+        //guzzle
+        $line_url = "https://api.line.me/v2/bot/message/reply";
+        $client = new Client();
+        $response = $client->request(
+          "POST",
+          $line_url,
+          [
+            "headers" => [
+              "Content-Type" => "application/json",
+              "Authorization" => "Bearer " . $channelAccessToken,
+            ],
+            "form_params" => [
+              "replyToken" => $replyToken,
+              "messages" => $messages
+            ]
+          ]
+        );
       }
       return;
     }
