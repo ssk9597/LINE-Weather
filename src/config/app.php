@@ -227,6 +227,7 @@ return [
     'View' => Illuminate\Support\Facades\View::class,
     "FlexMessages" => App\Library\FlexMessages::class,
     "ButtonMessages" => App\Library\ButtonMessages::class,
+    "Guzzle" => App\Library\Guzzle::class,
   ],
 
 ];

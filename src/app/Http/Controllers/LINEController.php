@@ -21,6 +21,7 @@ use GuzzleHttp\Client;
 // Library
 use FlexMessages;
 use ButtonMessages;
+use Guzzle;
 
 class LINEController extends Controller
 {
@@ -79,15 +80,13 @@ class LINEController extends Controller
         // 緯度・経度を取得
         $latitude = $event->getLatitude();
         $longitude = $event->getLongitude();
+
         // API
         $weatherAPI = env("WEATHER_API");
         // OpenWeather
-        $url = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&units=metric&lang=ja&appid=" . $weatherAPI;
-
+        $openWeather_url = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&units=metric&lang=ja&appid=" . $weatherAPI;
         //guzzle
-        $client = new Client();
-        $response = $client->request("GET", $url);
-        $weathers = $response->getBody();
+        $weathers = Guzzle::getGuzzle($openWeather_url);
         // JSON->Arrayに変換
         $weathers = json_decode($weathers, true);
 
