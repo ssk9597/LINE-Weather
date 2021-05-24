@@ -83,21 +83,19 @@ class LINEController extends Controller
         // JSON->Arrayに変換
         $weathers = json_decode($weathers, true);
 
-        //log
-        Log::info($weathers["daily"][1]);
-        Log::info($isToday);
-        Log::info(FlexMessages::getFlexMessageTemplate());
-
         // 時刻
         $time = $weathers["daily"][1]["dt"];
         $time = date("Y/m/d", $time);
         // 天気予報
         $weatherInformation = $weathers["daily"][1]["weather"][0]["description"];
         // 体感温度（ファッション）（朝、日中、夕方、夜）
-        $mornTemperature = $weathers["daily"][1]["feels_like"]["morn"] . "℃";
-        $dayTemperature = $weathers["daily"][1]["feels_like"]["day"] . "℃";
-        $eveTemperature = $weathers["daily"][1]["feels_like"]["eve"] . "℃";
-        $nightTemperature = $weathers["daily"][1]["feels_like"]["night"] . "℃";
+        $mornTemperature = $weathers["daily"][1]["feels_like"]["morn"];
+        $dayTemperature = $weathers["daily"][1]["feels_like"]["day"];
+        $eveTemperature = $weathers["daily"][1]["feels_like"]["eve"];
+        $nightTemperature = $weathers["daily"][1]["feels_like"]["night"];
+
+        // 上記の必要項目を配列にする
+        $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature);
 
         // メッセージ定型
         $message = "時刻: " . $time . ", 天気: " . $weatherInformation . ", 体感気温: 朝）" . $mornTemperature . ", 日中）" . $dayTemperature . ", 夕方）" . $eveTemperature . ", 夜）" . $nightTemperature;

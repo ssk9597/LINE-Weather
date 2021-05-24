@@ -4,8 +4,15 @@ namespace App\Library;
 
 class FlexMessages
 {
+  // FlexMessageを作成する
+  public static function createFlexMessage($message)
+  {
+    $contents = self::getFlexMessageTemplate($message);
+    return ["type" => "flex", "altText" => "This is a Flex Message", "contents" => $contents];
+  }
   // FlexMessageのテンプレート
-  public static function getFlexMessageTemplate()
+  // 修正が必要なところは写真とアドバイスメッセージ
+  public static function getFlexMessageTemplate($message)
   {
     return [
       "type" => "bubble",
@@ -15,7 +22,7 @@ class FlexMessages
         "contents" => [
           [
             "type" => "text",
-            "text" => "2021/05/25",
+            "text" => $message[0],
             "color" => "#FFFFFF",
             "align" => "center",
             "weight" => "bold"
@@ -33,7 +40,7 @@ class FlexMessages
         "contents" => [
           [
             "type" => "text",
-            "text" => "天気は、「薄い雲」です",
+            "text" => "天気は、「" . $message[1] . "」です",
             "weight" => "bold",
             "align" => "center"
           ],
@@ -44,28 +51,28 @@ class FlexMessages
           ],
           [
             "type" => "text",
-            "text" => "朝：16.11℃",
+            "text" => "朝：" . $message[2] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#C8BD16"
           ],
           [
             "type" => "text",
-            "text" => "日中：25.13℃",
+            "text" => "日中：" . $message[3] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#789BC0"
           ],
           [
             "type" => "text",
-            "text" => "夕方：19.9℃",
+            "text" => "夕方：" . $message[4] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#091C43"
           ],
           [
             "type" => "text",
-            "text" => "夜：15.64℃",
+            "text" => "夜：" . $message[5] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#004032"
