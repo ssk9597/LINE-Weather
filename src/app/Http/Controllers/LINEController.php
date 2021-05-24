@@ -14,11 +14,12 @@ use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
-
 // logs
 use Illuminate\Support\Facades\Log;
 // Guzzle
 use GuzzleHttp\Client;
+// Library
+use FlexMessages;
 
 class LINEController extends Controller
 {
@@ -85,6 +86,7 @@ class LINEController extends Controller
         //log
         Log::info($weathers["daily"][1]);
         Log::info($isToday);
+        Log::info(FlexMessages::getFlexMessageTemplate());
 
         // 時刻
         $time = $weathers["daily"][1]["dt"];
