@@ -226,6 +226,7 @@ return [
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
     "FlexMessages" => App\Library\FlexMessages::class,
+    "ButtonMessages" => App\Library\ButtonMessages::class,
   ],
 
 ];
