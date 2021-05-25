@@ -31,7 +31,7 @@ class FlexMessages
       ],
       "hero" => [
         "type" => "image",
-        "url" => "https =>//imgs.m-oo-m.com/uploads/public/5fa/b5d/d64/5fab5dd64eeed669757038.jpg",
+        "url" => $message[1],
         "size" => "full"
       ],
       "body" => [
@@ -40,7 +40,7 @@ class FlexMessages
         "contents" => [
           [
             "type" => "text",
-            "text" => "天気は、「" . $message[1] . "」です",
+            "text" => "天気は、「" . $message[2] . "」です",
             "weight" => "bold",
             "align" => "center"
           ],
@@ -51,28 +51,28 @@ class FlexMessages
           ],
           [
             "type" => "text",
-            "text" => "朝：" . $message[2] . "℃",
+            "text" => "朝：" . $message[3] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#C8BD16"
           ],
           [
             "type" => "text",
-            "text" => "日中：" . $message[3] . "℃",
+            "text" => "日中：" . $message[4] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#789BC0"
           ],
           [
             "type" => "text",
-            "text" => "夕方：" . $message[4] . "℃",
+            "text" => "夕方：" . $message[5] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#091C43"
           ],
           [
             "type" => "text",
-            "text" => "夜：" . $message[5] . "℃",
+            "text" => "夜：" . $message[6] . "℃",
             "margin" => "sm",
             "size" => "sm",
             "color" => "#004032"
@@ -88,7 +88,7 @@ class FlexMessages
           ],
           [
             "type" => "text",
-            "text" => $message[6],
+            "text" => $message[7],
             "margin" => "sm",
             "wrap" => true,
             "size" => "xs"
