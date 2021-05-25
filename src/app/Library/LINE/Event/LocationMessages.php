@@ -2,8 +2,6 @@
 
 namespace App\Library\LINE\Event;
 
-// logs
-use Illuminate\Support\Facades\Log;
 // Library
 use FlexMessages;
 use Guzzle;
@@ -78,7 +76,6 @@ class LocationMessages
 
     // JSONにする
     $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    Log::info($messages);
 
     return $messages;
   }
