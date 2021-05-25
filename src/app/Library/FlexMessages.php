@@ -88,7 +88,7 @@ class FlexMessages
           ],
           [
             "type" => "text",
-            "text" => "シャツなど羽織りものがあると過ごしやすいです",
+            "text" => $message[6],
             "margin" => "sm",
             "wrap" => true,
             "size" => "xs"
