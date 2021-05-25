@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Log;
 // Guzzle
 use GuzzleHttp\Client;
 // Library
-use FlexMessages;
-use ButtonMessages;
+use FlexMessageBuilder;
+use ButtonMessageBuilder;
 use Guzzle;
 
 class LINEController extends Controller
@@ -63,13 +63,13 @@ class LINEController extends Controller
           // text
           $btn_message = "今日はどんな洋服にしようかな";
           // class
-          ButtonMessages::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
+          ButtonMessageBuilder::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
         } else if ($message === "明日の洋服は？") {
           $isToday = false;
           // text
           $btn_message = "明日はどんな洋服にしようかな";
           // class
-          ButtonMessages::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
+          ButtonMessageBuilder::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
         } else {
           $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
           $bot->replyMessage($replyToken, $textMessage);
@@ -123,7 +123,7 @@ class LINEController extends Controller
         $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
         // JSONにする
-        $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
+        $messages = json_encode(FlexMessageBuilder::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
         Log::info($messages);
 
         //guzzle

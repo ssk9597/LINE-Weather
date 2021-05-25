@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Library;
+namespace App\Library\LINE;
 
-class FlexMessages
+class FlexMessageBuilder
 {
   // FlexMessageを作成する
   public static function createFlexMessage($message)
