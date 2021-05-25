@@ -77,7 +77,7 @@ class LocationMessages
     $weatherArray = array($time, $imageURL, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
     // JSONにする
-    $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
+    $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     Log::info($messages);
 
     return $messages;
