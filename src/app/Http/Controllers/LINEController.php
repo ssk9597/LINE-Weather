@@ -21,6 +21,7 @@ use GuzzleHttp\Client;
 // Library
 use FlexMessages;
 use ButtonMessages;
+use TextMessages;
 use Guzzle;
 
 class LINEController extends Controller
@@ -44,36 +45,12 @@ class LINEController extends Controller
     //Webhookの処理
     $events = $bot->parseEventRequest($request->getContent(), $signature);
 
-    // text
-    $btn_text = "現在地を送る";
-    $btn_url = "https://line.me/R/nv/location/";
-    $btn_builder = "現在地を送ってください";
-
     foreach ($events as $event) {
       // イベントのリプライトークンを取得する
       $replyToken = $event->getReplyToken();
-      // 今日か明日かを判別（true: 今日、false: 明日）
-      $isToday = true;
       // eventがテキストメッセージの時
       if ($event instanceof TextMessage) {
-        // テキストメッセージのテキストを取得する
-        $message = $event->getText();
-        // 入力された文字が「今日の洋服は？」「明日の洋服は？」かどうかで応答メッセージを変更する
-        if ($message === "今日の洋服は？") {
-          // text
-          $btn_message = "今日はどんな洋服にしようかな";
-          // class
-          ButtonMessageBuilder::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
-        } else if ($message === "明日の洋服は？") {
-          $isToday = false;
-          // text
-          $btn_message = "明日はどんな洋服にしようかな";
-          // class
-          ButtonMessageBuilder::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
-        } else {
-          $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
-          $bot->replyMessage($replyToken, $textMessage);
-        }
+        TextMessages::eventTextMessage($event, $bot, $replyToken);
       }
 
       if ($event instanceof LocationMessage) {
