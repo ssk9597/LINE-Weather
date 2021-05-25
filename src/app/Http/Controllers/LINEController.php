@@ -22,6 +22,7 @@ use GuzzleHttp\Client;
 use FlexMessages;
 use ButtonMessages;
 use TextMessages;
+use LocationMessages;
 use Guzzle;
 
 class LINEController extends Controller
@@ -54,54 +55,8 @@ class LINEController extends Controller
       }
 
       if ($event instanceof LocationMessage) {
-        // 緯度・経度を取得
-        $latitude = $event->getLatitude();
-        $longitude = $event->getLongitude();
-
-        // API
-        $weatherAPI = env("WEATHER_API");
-        // OpenWeather
-        $openWeather_url = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&units=metric&lang=ja&appid=" . $weatherAPI;
-        //guzzle
-        $weathers = Guzzle::getGuzzle($openWeather_url);
-        // JSON->Arrayに変換
-        $weathers = json_decode($weathers, true);
-
-        // 時刻
-        $time = $weathers["daily"][1]["dt"];
-        $time = date("Y/m/d", $time);
-        // 天気予報
-        $weatherInformation = $weathers["daily"][1]["weather"][0]["description"];
-        // 体感温度（ファッション）（朝、日中、夕方、夜）
-        $mornTemperature = $weathers["daily"][1]["feels_like"]["morn"];
-        $dayTemperature = $weathers["daily"][1]["feels_like"]["day"];
-        $eveTemperature = $weathers["daily"][1]["feels_like"]["eve"];
-        $nightTemperature = $weathers["daily"][1]["feels_like"]["night"];
-
-        // 最高気温で洋服を分岐する
-        $arrayTemperature = array($mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature);
-
-        $highestTemperature = max($arrayTemperature);
-        if ($highestTemperature >= 26) {
-          $fashionAdvice = "暑い！半袖が活躍する時期です。少し歩くだけで汗ばむ気温なので半袖1枚で大丈夫です。ハットや日焼け止めなどの対策もしましょう";
-        } else if ($highestTemperature >= 21) {
-          $fashionAdvice = "半袖と長袖の分かれ目の気温です。日差しのある日は半袖を、曇りや雨で日差しがない日は長袖がおすすめです。この気温では、半袖の上にライトアウターなどを着ていつでも脱げるようにしておくといいですね！";
-        } else if ($highestTemperature >= 16) {
-          $fashionAdvice = "レイヤードスタイルが楽しめる気温です。ちょっと肌寒いかな？というくらいの過ごしやすい時期なので目一杯ファッションを楽しみましょう！日中と朝晩で気温差が激しいので羽織ものを持つことを前提としたコーディネートがおすすめです。";
-        } else if ($highestTemperature >= 12) {
-          $fashionAdvice = "じわじわと寒さを感じる気温です。ライトアウターやニットやパーカーなどが活躍します。この時期は急に暑さをぶり返すことも多いのでこのLINEで毎日天気を確認してくださいね！";
-        } else if ($highestTemperature >= 7) {
-          $fashionAdvice = "そろそろ冬本番です。冬服の上にアウターを羽織ってちょうどいいくらいです。ただし室内は暖房が効いていることが多いので脱ぎ着しやすいコーディネートがおすすめです！";
-        } else {
-          $fashionAdvice = "凍えるほどの寒さです。しっかり厚着して、マフラーや手袋、ニット帽などの冬小物もうまく使って防寒対策をしましょう！";
-        }
-
-        // 上記の必要項目を配列にする
-        $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
-
-        // JSONにする
-        $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
-        Log::info($messages);
+        LocationMessages::getWeatherData($event);
+        $messages = LocationMessages::dataFormattingJSON($event);
 
         //guzzle
         $line_url = "https://api.line.me/v2/bot/message/reply";

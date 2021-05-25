@@ -228,6 +228,7 @@ return [
     "FlexMessages" => App\Library\LINE\Builder\FlexMessages::class,
     "ButtonMessages" => App\Library\LINE\Builder\ButtonMessages::class,
     "TextMessages" => App\Library\LINE\Event\TextMessages::class,
+    "LocationMessages" => App\Library\LINE\Event\LocationMessages::class,
     "Guzzle" => App\Library\Guzzle::class,
   ],
 
