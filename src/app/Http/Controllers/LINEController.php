@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Log;
 // Guzzle
 use GuzzleHttp\Client;
 // Library
-use FlexMessageBuilder;
-use ButtonMessageBuilder;
+use FlexMessages;
+use ButtonMessages;
 use Guzzle;
 
 class LINEController extends Controller
@@ -123,7 +123,7 @@ class LINEController extends Controller
         $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
         // JSONにする
-        $messages = json_encode(FlexMessageBuilder::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
+        $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE);
         Log::info($messages);
 
         //guzzle

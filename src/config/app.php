@@ -225,8 +225,8 @@ return [
     'URL' => Illuminate\Support\Facades\URL::class,
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
-    "FlexMessageBuilder" => App\Library\LINE\FlexMessageBuilder::class,
-    "ButtonMessageBuilder" => App\Library\LINE\ButtonMessageBuilder::class,
+    "FlexMessages" => App\Library\LINE\Builder\FlexMessages::class,
+    "ButtonMessages" => App\Library\LINE\Builder\ButtonMessages::class,
     "Guzzle" => App\Library\Guzzle::class,
   ],
 
