@@ -58,22 +58,26 @@ class LINEController extends Controller
         LocationMessages::getWeatherData($event);
         $messages = LocationMessages::dataFormattingJSON($event);
 
+        Log::info($messages);
+
         //guzzle
         $line_url = "https://api.line.me/v2/bot/message/reply";
         $client = new Client();
-        $response = $client->request(
+        $options = [
+          "headers" => [
+            "Content-Type" => "application/json",
+            "Authorization" => "Bearer " . $channelAccessToken,
+          ],
+          "form_params" => [
+            "replyToken" => $replyToken,
+            "messages" => $messages
+          ]
+        ];
+        // Log::info($options);
+        $client->request(
           "POST",
           $line_url,
-          [
-            "headers" => [
-              "Content-Type" => "application/json",
-              "Authorization" => "Bearer " . $channelAccessToken,
-            ],
-            "form_params" => [
-              "replyToken" => $replyToken,
-              "messages" => $messages
-            ]
-          ]
+          $options
         );
       }
       return;
