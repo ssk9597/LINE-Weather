@@ -37,15 +37,15 @@ class LocationMessages
     $weathers = self::getWeatherData($event);
 
     // 時刻
-    $time = $weathers["daily"][1]["dt"];
+    $time = $weathers["daily"][0]["dt"];
     $time = date("Y/m/d", $time);
     // 天気予報
-    $weatherInformation = $weathers["daily"][1]["weather"][0]["description"];
+    $weatherInformation = $weathers["daily"][0]["weather"][0]["description"];
     // 体感温度（ファッション）（朝、日中、夕方、夜）
-    $mornTemperature = $weathers["daily"][1]["feels_like"]["morn"];
-    $dayTemperature = $weathers["daily"][1]["feels_like"]["day"];
-    $eveTemperature = $weathers["daily"][1]["feels_like"]["eve"];
-    $nightTemperature = $weathers["daily"][1]["feels_like"]["night"];
+    $mornTemperature = $weathers["daily"][0]["feels_like"]["morn"];
+    $dayTemperature = $weathers["daily"][0]["feels_like"]["day"];
+    $eveTemperature = $weathers["daily"][0]["feels_like"]["eve"];
+    $nightTemperature = $weathers["daily"][0]["feels_like"]["night"];
 
     // 最高気温で洋服を分岐する
     $arrayTemperature = array($mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature);
