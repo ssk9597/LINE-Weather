@@ -8,3 +8,7 @@
 
 /************************ LINE *************************/
 Route::post("/line/message", "LINEController@sendMessage");
+
+Route::get('/', function () {
+  return view('welcome');
+});
