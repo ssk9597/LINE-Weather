@@ -30,8 +30,8 @@ class LocationMessages
     return $weathers;
   }
 
-  // getWeatherDataを整形してJSONを作成する
-  public static function dataFormattingJSON($event)
+  // getWeatherDataを整形する
+  public static function dataFormatting($event)
   {
     // getWeatherDataを取得
     $weathers = self::getWeatherData($event);
@@ -74,9 +74,29 @@ class LocationMessages
     // 上記の必要項目を配列にする
     $weatherArray = array($time, $imageURL, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
-    // JSONにする
-    $messages = json_encode(FlexMessages::createFlexMessage($weatherArray), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
+    // 値を渡す
+    $messages = FlexMessages::createFlexMessage($weatherArray);
     return $messages;
+  }
+
+  // メッセージを送る
+  public static function sendReplyMessage($event, $replyToken, $channelAccessToken)
+  {
+    $messages = self::dataFormatting($event);
+
+    $result = json_encode(['replyToken' => $replyToken, 'messages' => [$messages]], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $curl = curl_init();
+    //POSTリクエスト
+    curl_setopt($curl, CURLOPT_POST, true);
+    //ヘッダを指定
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $channelAccessToken, 'Content-type: application/json'));
+    //リクエストURL
+    curl_setopt($curl, CURLOPT_URL, 'https://api.line.me/v2/bot/message/reply');
+    //送信するデータ
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $result);
+    // 実行する
+    curl_exec($curl);
+    // 閉じる
+    curl_close($curl);
   }
 }

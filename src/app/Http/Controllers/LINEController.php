@@ -10,14 +10,6 @@ use LINE\LINEBot\SignatureValidator;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\Event\MessageEvent\LocationMessage;
-use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
-use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
-use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
-use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
-// logs
-use Illuminate\Support\Facades\Log;
-// Guzzle
-use GuzzleHttp\Client;
 // Library
 use FlexMessages;
 use ButtonMessages;
@@ -54,31 +46,9 @@ class LINEController extends Controller
         TextMessages::eventTextMessage($event, $bot, $replyToken);
       }
 
+      // eventが位置情報メッセージの時
       if ($event instanceof LocationMessage) {
-        LocationMessages::getWeatherData($event);
-        $messages = LocationMessages::dataFormattingJSON($event);
-
-        Log::info($messages);
-
-        //guzzle
-        $line_url = "https://api.line.me/v2/bot/message/reply";
-        $client = new Client();
-        $options = [
-          "headers" => [
-            "Content-Type" => "application/json",
-            "Authorization" => "Bearer " . $channelAccessToken,
-          ],
-          "form_params" => [
-            "replyToken" => $replyToken,
-            "messages" => $messages
-          ]
-        ];
-        // Log::info($options);
-        $client->request(
-          "POST",
-          $line_url,
-          $options
-        );
+        LocationMessages::sendReplyMessage($event, $replyToken, $channelAccessToken);
       }
       return;
     }
