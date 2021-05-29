@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Library\LINE\Event;
+namespace App\Common\LINE\Event;
 
-// Library
+// Common
 use FlexMessages;
 use Guzzle;
+use Util;
 
 class LocationMessages
 {
@@ -21,7 +22,7 @@ class LocationMessages
     // OpenWeather
     $openWeather_url = "https://api.openweathermap.org/data/2.5/onecall?lat=" . $latitude . "&lon=" . $longitude . "&units=metric&lang=ja&appid=" . $weatherAPI;
 
-    //guzzle
+    //common->guzzle
     $weathers = Guzzle::getGuzzle($openWeather_url);
 
     // JSON->Arrayに変換
@@ -49,8 +50,8 @@ class LocationMessages
 
     // 最高気温で洋服を分岐する
     $arrayTemperature = array($mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature);
-
     $highestTemperature = max($arrayTemperature);
+
     if ($highestTemperature >= 26) {
       $fashionAdvice = "暑い！半袖が活躍する時期です。少し歩くだけで汗ばむ気温なので半袖1枚で大丈夫です。ハットや日焼け止めなどの対策もしましょう";
       $imageURL = "https://uploads-ssl.webflow.com/603c87adb15be3cb0b3ed9b5/60aa3c44153071e6df530eb7_71.png";
@@ -74,17 +75,24 @@ class LocationMessages
     // 上記の必要項目を配列にする
     $weatherArray = array($time, $imageURL, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
-    // 値を渡す
+    // common->FlexMessages
     $messages = FlexMessages::createFlexMessage($weatherArray);
     return $messages;
   }
 
   // メッセージを送る
-  public static function sendReplyMessage($event, $replyToken, $channelAccessToken)
+  public static function sendReplyMessage($event)
   {
+    //Utilから値を取得
+    $channelAccessToken = Util::getChannelAccessToken();
+    $replyToken = Util::getReplyToken($event);
+
+    // 配列を取得
     $messages = self::dataFormatting($event);
 
+    // JSON化する
     $result = json_encode(['replyToken' => $replyToken, 'messages' => [$messages]], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
     $curl = curl_init();
     //POSTリクエスト
     curl_setopt($curl, CURLOPT_POST, true);

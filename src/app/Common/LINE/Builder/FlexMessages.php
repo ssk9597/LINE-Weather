@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Library\LINE\Builder;
+namespace App\Common\LINE\Builder;
 
 class FlexMessages
 {

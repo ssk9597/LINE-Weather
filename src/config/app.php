@@ -225,11 +225,12 @@ return [
     'URL' => Illuminate\Support\Facades\URL::class,
     'Validator' => Illuminate\Support\Facades\Validator::class,
     'View' => Illuminate\Support\Facades\View::class,
-    "FlexMessages" => App\Library\LINE\Builder\FlexMessages::class,
-    "ButtonMessages" => App\Library\LINE\Builder\ButtonMessages::class,
-    "TextMessages" => App\Library\LINE\Event\TextMessages::class,
-    "LocationMessages" => App\Library\LINE\Event\LocationMessages::class,
-    "Guzzle" => App\Library\Guzzle::class,
+    "FlexMessages" => App\Common\LINE\Builder\FlexMessages::class,
+    "ButtonMessages" => App\Common\LINE\Builder\ButtonMessages::class,
+    "TextMessages" => App\Common\LINE\Event\TextMessages::class,
+    "LocationMessages" => App\Common\LINE\Event\LocationMessages::class,
+    "Guzzle" => App\Common\Guzzle::class,
+    "Util" => App\Common\LINE\Util::class,
   ],
 
 ];
