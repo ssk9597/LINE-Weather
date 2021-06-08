@@ -7,6 +7,9 @@ use TextMessage;
 use Guzzle;
 use Util;
 
+// LINE
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+
 class LocationMessages
 {
   // OpenWeatherからguzzleでデータを取得
@@ -81,25 +84,35 @@ class LocationMessages
     //Utilから値を取得
     $channelAccessToken = Util::getChannelAccessToken();
     $replyToken = Util::getReplyToken($event);
+    $bot = Util::prepareToSendMessage();
 
     // 配列を取得
     $messages = self::dataFormatting($event);
 
-    // JSON化する
-    $result = json_encode(['replyToken' => $replyToken, 'messages' => $messages], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $message1 = $messages[0];
+    $message2 = $messages[1];
 
-    $curl = curl_init();
-    //POSTリクエスト
-    curl_setopt($curl, CURLOPT_POST, true);
-    //ヘッダを指定
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $channelAccessToken, 'Content-type: application/json'));
-    //リクエストURL
-    curl_setopt($curl, CURLOPT_URL, 'https://api.line.me/v2/bot/message/reply');
-    //送信するデータ
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $result);
-    // 実行する
-    curl_exec($curl);
-    // 閉じる
-    curl_close($curl);
+    $textMessage = new TextMessageBuilder($message1);
+    $bot->replyMessage($replyToken, $textMessage);
+
+    $textMessage = new TextMessageBuilder($message2);
+    $bot->replyMessage($replyToken, $textMessage);
+
+    // // JSON化する
+    // $result = json_encode(['replyToken' => $replyToken, 'messages' => $messages], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    // $curl = curl_init();
+    // //POSTリクエスト
+    // curl_setopt($curl, CURLOPT_POST, true);
+    // //ヘッダを指定
+    // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $channelAccessToken, 'Content-type: application/json'));
+    // //リクエストURL
+    // curl_setopt($curl, CURLOPT_URL, 'https://api.line.me/v2/bot/message/reply');
+    // //送信するデータ
+    // curl_setopt($curl, CURLOPT_POSTFIELDS, $result);
+    // // 実行する
+    // curl_exec($curl);
+    // // 閉じる
+    // curl_close($curl);
   }
 }
