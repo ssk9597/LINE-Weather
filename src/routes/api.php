@@ -10,3 +10,7 @@ use Illuminate\Http\Request;
 
 /************************ LINE *************************/
 Route::post("/line/message", "LINEController@sendMessage");
+
+Route::get("/", function () {
+  return "Hello World!";
+});
