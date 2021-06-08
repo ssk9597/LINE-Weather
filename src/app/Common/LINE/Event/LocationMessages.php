@@ -3,6 +3,7 @@
 namespace App\Common\LINE\Event;
 
 // Common
+use TextMessage;
 use Guzzle;
 use Util;
 
@@ -68,8 +69,9 @@ class LocationMessages
     // 上記の必要項目を配列にする
     $weatherArray = array($time, $weatherInformation, $mornTemperature, $dayTemperature, $eveTemperature, $nightTemperature, $fashionAdvice);
 
-    // common->FlexMessages
-    $messages = FlexMessages::createFlexMessage($weatherArray);
+    // common->TextMessages
+    $messages = TextMessage::createTextMessage($weatherArray);
+
     return $messages;
   }
 
@@ -84,7 +86,7 @@ class LocationMessages
     $messages = self::dataFormatting($event);
 
     // JSON化する
-    $result = json_encode(['replyToken' => $replyToken, 'messages' => [$messages]], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $result = json_encode(['replyToken' => $replyToken, 'messages' => $messages], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
     $curl = curl_init();
     //POSTリクエスト
