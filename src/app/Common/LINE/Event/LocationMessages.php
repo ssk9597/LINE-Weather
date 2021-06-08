@@ -3,7 +3,6 @@
 namespace App\Common\LINE\Event;
 
 // Common
-use FlexMessages;
 use Guzzle;
 use Util;
 
