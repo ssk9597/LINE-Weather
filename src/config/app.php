@@ -227,6 +227,7 @@ return [
     'View' => Illuminate\Support\Facades\View::class,
     "FlexMessages" => App\Common\LINE\Builder\FlexMessages::class,
     "ButtonMessages" => App\Common\LINE\Builder\ButtonMessages::class,
+    "ImageMessages" => App\Common\LINE\Builder\ImageMessages::class,
     "TextMessages" => App\Common\LINE\Event\TextMessages::class,
     "LocationMessages" => App\Common\LINE\Event\LocationMessages::class,
     "Guzzle" => App\Common\Guzzle::class,
