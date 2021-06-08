@@ -9,6 +9,7 @@ use Util;
 
 // LINE
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use Illuminate\Support\Facades\Log;
 
 class LocationMessages
 {
@@ -89,17 +90,11 @@ class LocationMessages
     // 配列を取得
     $messages = self::dataFormatting($event);
 
-    $message1 = $messages[0];
-    $message2 = $messages[1];
+    $message = $messages[0];
+    Log::info($message);
 
-    $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
+    $textMessage = new TextMessageBuilder($message);
     $bot->replyMessage($replyToken, $textMessage);
-
-    $textMessage1 = new TextMessageBuilder($message1);
-    $bot->replyMessage($replyToken, $textMessage1);
-
-    $textMessage2 = new TextMessageBuilder($message2);
-    $bot->replyMessage($replyToken, $textMessage2);
 
     // // JSON化する
     // $result = json_encode(['replyToken' => $replyToken, 'messages' => $messages], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
