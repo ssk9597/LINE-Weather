@@ -2,7 +2,7 @@
 
 namespace App\Common\LINE\Builder;
 
-class ImageMessages
+class ImageMessage
 {
   // ImageMessageを作成する
   public static function createImageMessage($message)

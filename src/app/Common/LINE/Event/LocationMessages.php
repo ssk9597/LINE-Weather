@@ -4,7 +4,7 @@ namespace App\Common\LINE\Event;
 
 // Common
 use FlexMessages;
-use ImageMessages;
+use ImageMessage;
 use Guzzle;
 use Util;
 
@@ -79,7 +79,7 @@ class LocationMessages
     // common->FlexMessages
     // $messages = FlexMessages::createFlexMessage($weatherArray);
     // common->ImageMessages
-    $messages = ImageMessages::createImageMessage($weatherArray);
+    $messages = ImageMessage::createImageMessage($weatherArray);
     return $messages;
   }
 
