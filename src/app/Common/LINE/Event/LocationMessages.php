@@ -92,11 +92,14 @@ class LocationMessages
     $message1 = $messages[0];
     $message2 = $messages[1];
 
-    $textMessage = new TextMessageBuilder($message1);
+    $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
     $bot->replyMessage($replyToken, $textMessage);
 
-    $textMessage = new TextMessageBuilder($message2);
-    $bot->replyMessage($replyToken, $textMessage);
+    $textMessage1 = new TextMessageBuilder($message1);
+    $bot->replyMessage($replyToken, $textMessage1);
+
+    $textMessage2 = new TextMessageBuilder($message2);
+    $bot->replyMessage($replyToken, $textMessage2);
 
     // // JSON化する
     // $result = json_encode(['replyToken' => $replyToken, 'messages' => $messages], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
