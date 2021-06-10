@@ -7,7 +7,7 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 
-class ButtonMessages
+class ButtonMessage
 {
   public static function createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder)
   {
