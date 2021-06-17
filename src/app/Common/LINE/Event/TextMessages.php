@@ -3,7 +3,7 @@
 namespace App\Common\LINE\Event;
 
 // Common
-use ButtonMessages;
+use ButtonMessage;
 use Util;
 
 // LINE
@@ -30,8 +30,8 @@ class TextMessages
       $btn_builder = "現在地を送ってください";
       $btn_message = "今日はどんな洋服にしようかな";
 
-      // builder->ButtonMessages
-      ButtonMessages::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
+      // builder->ButtonMessage
+      ButtonMessage::createButtonMessage($bot, $replyToken, $btn_text, $btn_url, $btn_message, $btn_builder);
     } else {
       $textMessage = new TextMessageBuilder("ごめんなさい、このメッセージは対応していません。");
       $bot->replyMessage($replyToken, $textMessage);
