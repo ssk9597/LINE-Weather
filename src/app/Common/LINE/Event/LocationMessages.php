@@ -100,18 +100,22 @@ class LocationMessages
 
     Log::info($result);
 
-    $curl = curl_init();
-    //POSTリクエスト
-    curl_setopt($curl, CURLOPT_POST, true);
-    //ヘッダを指定
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $channelAccessToken, 'Content-type: application/json'));
-    //リクエストURL
-    curl_setopt($curl, CURLOPT_URL, 'https://api.line.me/v2/bot/message/reply');
-    //送信するデータ
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $result);
-    // 実行する
-    curl_exec($curl);
-    // 閉じる
-    curl_close($curl);
+    try {
+      $curl = curl_init();
+      //POSTリクエスト
+      curl_setopt($curl, CURLOPT_POST, true);
+      //ヘッダを指定
+      curl_setopt($curl, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $channelAccessToken, 'Content-type: application/json'));
+      //リクエストURL
+      curl_setopt($curl, CURLOPT_URL, 'https://api.line.me/v2/bot/message/reply');
+      //送信するデータ
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $result);
+      // 実行する
+      curl_exec($curl);
+      // 閉じる
+      curl_close($curl);
+    } catch (Exception $err) {
+      Log::info($err);
+    }
   }
 }
