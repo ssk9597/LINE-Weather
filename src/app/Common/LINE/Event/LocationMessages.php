@@ -114,14 +114,6 @@ class LocationMessages
       curl_exec($curl);
       // 閉じる
       curl_close($curl);
-
-      $info = curl_getinfo($curl);
-      $errno = curl_errno($curl);
-      $error = curl_error($curl);
-      curl_close($curl);
-      if (CURLE_OK !== $errno) {
-        Log::info($error, $errno);
-      }
     } catch (Exception $err) {
       Log::info($err);
     }
